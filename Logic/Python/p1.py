@@ -198,3 +198,108 @@ for n in arr_sum:
     prefix.append(prefix[-1] + n)
 print("Prefix sums:", prefix)
 print("Sum of range(1,3):", prefix[3] - prefix[1])
+
+# =======================
+# 1️⃣3️⃣ TWO POINTERS (ARRAY)
+# =======================
+def two_sum(arr, target):
+    left, right = 0, len(arr) - 1
+    while left < right:
+        curr_sum = arr[left] + arr[right]
+        if curr_sum == target:
+            return (left, right)
+        elif curr_sum < target:
+            left += 1
+        else:
+            right -= 1
+    return None
+sorted_arr = [1, 2, 3, 4, 6, 8]
+print("Two sum indices for 10:", two_sum(sorted_arr, 10))
+# =======================
+# 1️⃣4️⃣ DEPTH FIRST SEARCH (DFS) (GRAPH)
+# =======================
+def dfs(graph, start, visited=None):
+    if visited is None:
+        visited = set()
+    visited.add(start)
+    for neighbor in graph[start]:
+        if neighbor not in visited:
+            dfs(graph, neighbor, visited)
+    return visited
+graph_example = {
+    0: [1, 2],
+    1: [0, 3, 4],
+    2: [0],
+    3: [1],
+    4: [1, 5],
+    5: [4]
+}
+print("DFS starting from node 0:", dfs(graph_example, 0))
+# =======================
+# 1️⃣5️⃣ BREADTH FIRST SEARCH (BFS) (GRAPH)
+# =======================
+def bfs(graph, start):
+    visited = set()
+    queue = deque([start])
+    visited.add(start)
+    while queue:
+        node = queue.popleft()
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+    return visited
+print("BFS starting from node 0:", bfs(graph_example, 0))
+# =======================
+# 1️⃣6️⃣ DIJKSTRA'S ALGORITHM (SHORTEST PATH) (GRAPH)
+# =======================
+import heapq
+def dijkstra(graph, start):
+    min_heap = [(0, start)]
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    while min_heap:
+        curr_dist, curr_node = heapq.heappop(min_heap)
+        if curr_dist > distances[curr_node]:
+            continue
+        for neighbor, weight in graph[curr_node].items():
+            distance = curr_dist + weight
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(min_heap, (distance, neighbor))
+    return distances
+graph_weights = {
+    0: {1: 4, 2: 1},
+    1: {3: 1},
+    2: {1: 2, 3: 5},
+    3: {}
+}
+print("Dijkstra's shortest paths from node 0:", dijkstra(graph_weights, 0
+))
+# =======================
+# 1️⃣7️⃣ TOPOLOGICAL SORT (DAG)
+# =======================
+def topological_sort(graph):
+    in_degree = {u: 0 for u in graph}
+    for u in graph:
+        for v in graph[u]:
+            in_degree[v] += 1
+    queue = deque([u for u in graph if in_degree[u] == 0])
+    topo_order = []
+    while queue:
+        u = queue.popleft()
+        topo_order.append(u)
+        for v in graph[u]:
+            in_degree[v] -= 1
+            if in_degree[v] == 0:
+                queue.append(v)
+    return topo_order
+dag_example = {
+    5: [2, 0],
+    4: [0, 1],
+    3: [1],
+    2: [3],
+    1: [],
+    0: []
+}
+print("Topological sort of DAG:", topological_sort(dag_example))
