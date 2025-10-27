@@ -303,3 +303,79 @@ dag_example = {
     0: []
 }
 print("Topological sort of DAG:", topological_sort(dag_example))
+# =======================
+# 1️⃣8️⃣ UNION-FIND (DISJOINT SET)
+# =======================
+class UnionFind:
+    def __init__(self, size):
+        self.parent = list(range(size))
+        self.rank = [1] * size
+
+    def find(self, p):
+        if self.parent[p] != p:
+            self.parent[p] = self.find(self.parent[p])
+        return self.parent[p]
+
+    def union(self, p, q):
+        rootP = self.find(p)
+        rootQ = self.find(q)
+        if rootP != rootQ:
+            if self.rank[rootP] > self.rank[rootQ]:
+                self.parent[rootQ] = rootP
+            elif self.rank[rootP] < self.rank[rootQ]:
+                self.parent[rootP] = rootQ
+            else:
+                self.parent[rootQ] = rootP
+                self.rank[rootP] += 1
+uf = UnionFind(10)
+uf.union(1, 2)
+uf.union(2, 3)
+print("Find 3:", uf.find(3))
+print("Find 4:", uf.find(4))
+# =======================
+# 1️⃣9️⃣ BINARY TREE TRAVERSALS
+# =======================
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+def inorder_traversal(root):
+    return inorder_traversal(root.left) + [root.val] + inorder_traversal(root.right) if root else []
+def preorder_traversal(root):
+    return [root.val] + preorder_traversal(root.left) + preorder_traversal(root.right) if root else []
+def postorder_traversal(root):
+    return postorder_traversal(root.left) + postorder_traversal(root.right) + [root.val] if root else []
+# Example tree
+root = TreeNode(1)
+root.right = TreeNode(2)
+root.right.left = TreeNode(3)
+print("Inorder:", inorder_traversal(root))
+print("Preorder:", preorder_traversal(root))
+print("Postorder:", postorder_traversal(root))
+# =======================
+# 2️⃣0️⃣ HEAP (PRIORITY QUEUE)
+# =======================
+heap = []
+heapq.heappush(heap, 3)
+heapq.heappush(heap, 1)
+heapq.heappush(heap, 4)
+print("Heap after pushes:", heap)
+min_elem = heapq.heappop(heap)
+print("Popped min element:", min_elem)
+print("Heap after pop:", heap)
+# =======================
+# 2️⃣1️⃣ GREEDY ALGORITHM (ACTIVITY SELECTION)
+# =======================
+def activity_selection(activities):
+    activities.sort(key=lambda x: x[1])
+    selected = []
+    last_end_time = 0
+    for start, end in activities:
+        if start >= last_end_time:
+            selected.append((start, end))
+            last_end_time = end
+    return selected
+activities = [(1, 3), (2, 5), (4, 6), (6, 7), (5, 8)]
+print("Selected activities:", activity_selection(activities))
+# =======================
