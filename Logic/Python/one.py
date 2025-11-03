@@ -152,3 +152,47 @@ import math, random, datetime
 print("Square root of 16:", math.sqrt(16))
 print("Random number:", random.randint(1, 100))
 print("Current time:", datetime.datetime.now())
+
+# =======================
+# 1️⃣6️⃣ List Comprehension Example
+# =======================
+evens = [x for x in range(20) if x % 2 == 0]
+print("Even numbers:", evens)
+
+# =======================
+# 1️⃣7️⃣ Dictionary Comprehension Example
+# =======================
+squares = {x: x**2 for x in range(10)}
+print("Square mapping:", squares)
+
+# =======================
+# 1️⃣8️⃣ Set Comprehension Example
+# =======================
+unique_squares = {x**2 for x in range(-5, 6)}
+print("Unique squares:", unique_squares)
+
+# =======================
+# 1️⃣9️⃣ Generators Example
+# =======================
+def countdown(n):
+    while n > 0:
+        yield n
+        n -= 1
+for num in countdown(5):
+    print("Countdown:", num)
+    
+# =======================
+# 2️⃣0️⃣ Decorators Example
+# =======================
+def decorator_func(func):
+    def wrapper():
+        print("Before function call")
+        func()
+        print("After function call")
+    return wrapper
+@decorator_func
+def say_hello():
+    print("Hello!")
+say_hello()
+
+# =======================
