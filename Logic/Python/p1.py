@@ -379,3 +379,100 @@ def activity_selection(activities):
 activities = [(1, 3), (2, 5), (4, 6), (6, 7), (5, 8)]
 print("Selected activities:", activity_selection(activities))
 # =======================
+# 2️⃣2️⃣ KMP ALGORITHM (STRING MATCHING)
+# =======================
+def kmp_search(text, pattern):
+    def compute_lps(pattern):
+        lps = [0] * len(pattern)
+        length = 0
+        i = 1
+        while i < len(pattern):
+            if pattern[i] == pattern[length]:
+                length += 1
+                lps[i] = length
+                i += 1
+            else:
+                if length != 0:
+                    length = lps[length - 1]
+                else:
+                    lps[i] = 0
+                    i += 1
+        return lps
+
+    lps = compute_lps(pattern)
+    i = j = 0
+    while i < len(text):
+        if pattern[j] == text[i]:
+            i += 1
+            j += 1
+        if j == len(pattern):
+            return i - j
+        elif i < len(text) and pattern[j] != text[i]:
+            if j != 0:
+                j = lps[j - 1]
+            else:
+                i += 1
+    return -1
+print("KMP search index:", kmp_search("ababcababcabc", "abc"))
+
+# =======================
+# 2️⃣3️⃣ AVL TREE (SELF-BALANCING BINARY SEARCH TREE)
+# =======================
+class AVLNode:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+        self.height = 1
+class AVLTree:
+    def insert(self, root, key):
+        if not root:
+            return AVLNode(key)
+        elif key < root.key:
+            root.left = self.insert(root.left, key)
+        else:
+            root.right = self.insert(root.right, key)
+        root.height = 1 + max(self.get_height(root.left), self.get_height(root.right))
+        balance = self.get_balance(root)
+        if balance > 1 and key < root.left.key:
+            return self.right_rotate(root)
+        if balance < -1 and key > root.right.key:
+            return self.left_rotate(root)
+        if balance > 1 and key > root.left.key:
+            root.left = self.left_rotate(root.left)
+            return self.right_rotate(root)
+        if balance < -1 and key < root.right.key:
+            root.right = self.right_rotate(root.right)
+            return self.left_rotate(root)
+        return root
+    def left_rotate(self, z):
+        y = z.right
+        T2 = y.left
+        y.left = z
+        z.right = T2
+        z.height = 1 + max(self.get_height(z.left), self.get_height(z.right))
+        y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
+        return y
+    def right_rotate(self, z):
+        y = z.left
+        T3 = y.right
+        y.right = z
+        z.left = T3
+        z.height = 1 + max(self.get_height(z.left), self.get_height(z.right))
+        y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
+        return y
+    def get_height(self, root):
+        if not root:
+            return 0
+        return root.height
+    def get_balance(self, root):
+        if not root:
+            return 0
+        return self.get_height(root.left) - self.get_height(root.right)
+avl = AVLTree()
+root = None
+for key in [10, 20, 30, 40, 50, 25]:
+    root = avl.insert(root, key)
+print("AVL Tree root after insertions:", root.key)
+
+# =======================
