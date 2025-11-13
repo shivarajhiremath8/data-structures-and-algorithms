@@ -683,3 +683,33 @@ radix_sort(arr_radix)
 print("Radix sorted array:", arr_radix)
 
 # =======================
+# 2️⃣9️⃣ BELLMAN-FORD ALGORITHM (SHORTEST PATH WITH NEGATIVE WEIGHTS)
+# =======================
+
+def bellman_ford(graph, V, E, src):
+    dist = [float("Inf")] * V
+    dist[src] = 0
+    for _ in range(V - 1):
+        for u, v, w in graph:
+            if dist[u] != float("Inf") and dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+    for u, v, w in graph:
+        if dist[u] != float("Inf") and dist[u] + w < dist[v]:
+            print("Graph contains negative weight cycle")
+            return
+    return dist
+edges = [
+    (0, 1, -1),
+    (0, 2, 4),
+    (1, 2, 3),
+    (1, 3, 2),
+    (1, 4, 2),
+    (3, 2, 5),
+    (3, 1, 1),
+    (4, 3, -3)
+V = 5
+E = len(edges)
+distances = bellman_ford(edges, V, E, 0)
+print("Vertex Distance from Source:", distances)
+    
+# =======================
