@@ -713,3 +713,34 @@ distances = bellman_ford(edges, V, E, 0)
 print("Vertex Distance from Source:", distances)
     
 # =======================
+# 3️⃣0️⃣ FLOYD-WARSHALL ALGORITHM (ALL PAIRS SHORTEST PATH)
+# =======================
+def floyd_warshall(graph):
+    V = len(graph)
+    dist = [[float("Inf")] * V for _ in range(V)]
+    for i in range(V):
+        for j in range(V):
+            if i == j:
+                dist[i][j] = 0
+            elif graph[i][j] != 0:
+                dist[i][j] = graph[i][j]
+    for k in range(V):
+        for i in range(V):
+            for j in range(V):
+                if dist[i][k] + dist[k][j] < dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+    return dist
+graph_fw = [
+    [0, 3, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 7, 0, 2],
+    [0, 0, 0, 0, 2, 0],
+    [6, 0, 0, 0, 0, 0],
+    [0, 0, 0, 3, 0, 0]
+]
+distances_fw = floyd_warshall(graph_fw)
+print("Floyd-Warshall shortest paths:")
+for row in distances_fw:
+    print(row)
+    
+# -------------------------------------------------------
